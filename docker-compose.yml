@@ -1,0 +1,49 @@
+version: "3.4"
+
+services:
+
+
+#    memcached:
+#      image: memcached:alpine
+#      container_name: project-memcached
+
+#    redis:
+#      image: redis:alpine
+#      container_name: project-redis
+
+    mysql:
+#      image: mysql:8
+      image: mysql:5
+      container_name: project-mysql
+      volumes:
+        - ./env/data/mysql:/var/lib/mysql
+      environment:
+        - MYSQL_ROOT_PASSWORD=project
+        - MYSQL_DATABASE=project
+        - MYSQL_USER=project
+        - MYSQL_PASSWORD=project
+      ports:
+        - "3306:3306"
+
+#    elasticsearch:
+#      image: elasticsearch:5.4-alpine
+#      container_name: project-elasticsearch
+
+    webserver:
+      image: nginx:alpine
+      container_name: project-webserver
+      volumes:
+          - .:/application
+          - ./env/docker/nginx/ssl:/etc/nginx/ssl
+          - ./env/docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+          - ./env/logs/nginx:/var/log/nginx
+      ports:
+       - "80:80"
+       - "443:443"
+
+    php-fpm:
+      build: env/docker/php-fpm
+      container_name: project-php-fpm
+      volumes:
+        - .:/application
+        - ./env/docker/php-fpm/php-ini-overrides.ini:/etc/php/7.2/fpm/conf.d/99-overrides.ini

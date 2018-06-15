@@ -1,0 +1,6 @@
+.idea/
+.vagrant/
+/tmp/*
+/vendor/
+/env/logs/*
+/env/data/*
