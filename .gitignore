@@ -1,6 +1,7 @@
 .idea/
 .vagrant/
-/tmp/*
+/tmp/
 /vendor/
 /env/logs/*
 /env/data/*
+!.gitignore
